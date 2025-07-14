@@ -1,28 +1,28 @@
-# Studi Komparatif Skenario Fine-Tuning Model Transformer untuk Analisis Sentimen Teks Berbahasa Indonesia
+# A Comparative Study of Fine-Tuning Scenarios for Transformer Models in Indonesian Sentiment Analysis
 
-Repositori ini berisi kode dan notebook untuk penelitian Kerja Praktik yang bertujuan mengevaluasi berbagai strategi *fine-tuning* pada model *transformer* untuk tugas analisis sentimen berbahasa Indonesia.
+This repository contains the code and notebooks for a research project aimed at evaluating various fine-tuning strategies on transformer models for the task of Indonesian-language sentiment analysis.
 
-## Abstrak
+## Abstract
 
-Penelitian ini melakukan studi komparatif untuk mengevaluasi tiga skenario *fine-tuning*—*Fine-Tuning* Standar, *Gradual Unfreezing*, dan *Differential Learning Rates*—pada tiga arsitektur model: IndoBERTbase, IndoBERTweet, dan RoBERTa. Pengujian dilakukan pada dua dataset dengan domain berbeda, yaitu ulasan aplikasi (Dataset BBM) dan komentar politik (Dataset Pemilu), dengan metrik evaluasi utama F1-Score. Hasil penelitian menunjukkan bahwa **IndoBERTweet** secara konsisten menjadi model dengan performa tertinggi, sementara strategi **Fine-Tuning Standar** dengan *learning rate* yang teroptimasi terbukti lebih unggul dibandingkan dua teknik lanjutan yang lebih kompleks.
+This research conducts a comparative study to evaluate three fine-tuning scenarios—Standard Fine-Tuning, Gradual Unfreezing, and Differential Learning Rates—across three model architectures: IndoBERT-base, IndoBERTweet, and RoBERTa. The experiments were performed on two datasets from different domains: app reviews (BBM Dataset) and political comments (Pemilu Dataset), using F1-Score as the primary evaluation metric. The results show that **IndoBERTweet** consistently emerged as the top-performing model, while the **Standard Fine-Tuning** strategy with an optimized learning rate proved to be superior to the other two, more complex techniques.
 
-## 🔑 Temuan Utama
+## 🔑 Key Findings
 
-1.  **Model Terbaik adalah IndoBERTweet:** Model ini secara konsisten mengungguli arsitektur lain. Pada skenario terbaiknya (*Fine-Tuning* Standar), IndoBERTweet mencapai F1-Score **0.9218** pada Dataset BBM dan **0.7431** 
-2.  **Strategi Terbaik adalah *Fine-Tuning* Hyperparameter:** Skenario 1 dengan *learning rate* yang teroptimasi menghasilkan performa puncak. Sebagai contoh, IndoBERTweet pada Dataset BBM mencapai F1-Score **0.9218** dengan metode ini, melampaui hasil dari Skenario 3 (*Differential LR*, 0.9159) dan Skenario 2 (*Gradual Unfreezing*, 0.9042).
-3.  ***Differential LR* Lebih Unggul dari *Gradual Unfreezing*:** Di antara dua teknik lanjutan, *Differential Learning Rates* (S3) terbukti jauh lebih robust. Pada model RoBERTa dengan Dataset BBM, Skenario 3 berhasil mencapai F1-Score **0.8530**, sementara Skenario 2 mengalami kegagalan performa dengan skor hanya **0.4890**, menunjukkan perbedaan efektivitas yang sangat besar.
-4.  **Kualitas Data Sangat Berpengaruh:** Performa model secara drastis berbeda antar dataset. Skor F1-Score tertinggi pada Dataset BBM (**0.9218**) hampir **25% lebih tinggi** daripada skor tertinggi pada Dataset Pemilu (**0.7431**). Perbedaan ini juga tercermin pada *validation loss*, di mana *loss* terendah pada Dataset Pemilu (~0.64) jauh lebih tinggi daripada pada Dataset BBM (~0.27), mengindikasikan bahwa **kompleksitas domain, *noise*, dan ambiguitas data** merupakan tantangan besar dalam analisis sentimen politik.
+1.  **IndoBERTweet is the Best Model:** This model consistently outperformed other architectures. In its best-case scenario (Standard Fine-Tuning), IndoBERTweet achieved an F1-Score of **0.9218** on the BBM Dataset and **0.7431** on the Pemilu Dataset.
+2.  **Hyperparameter Tuning is the Best Strategy:** Scenario 1, with an optimized learning rate, yielded peak performance. For instance, IndoBERTweet on the BBM Dataset reached an F1-Score of **0.9218** with this method, surpassing the results from Scenario 3 (Differential LR, 0.9159) and Scenario 2 (Gradual Unfreezing, 0.9042).
+3.  **Differential LR is Superior to Gradual Unfreezing:** Among the two advanced techniques, Differential Learning Rates (S3) proved to be far more robust. On the RoBERTa model with the BBM Dataset, Scenario 3 achieved an F1-Score of **0.8530**, whereas Scenario 2 suffered a performance failure with a score of only **0.4890**, indicating a massive difference in effectiveness.
+4.  **Data Quality Has a Major Impact:** Model performance varied drastically between datasets. The highest F1-Score on the BBM Dataset (**0.9218**) was nearly **25% higher** than the highest score on the Pemilu Dataset (**0.7431**). This disparity was also reflected in the validation loss, where the lowest loss on the Pemilu Dataset (~0.64) was significantly higher than on the BBM Dataset (~0.27), suggesting that **domain complexity, noise, and data ambiguity** are major challenges in political sentiment analysis.
 
 ---
 
-## 📁 Struktur Proyek
+## 📁 Project Structure
 
 ```
 kp-penelitian/
 │
 ├── data/
-│   ├── dataset_bbm.csv         # Dataset ulasan aplikasi BBM
-│   └── dataset_pemilu.csv      # Dataset komentar seputar Pemilu
+│   ├── dataset_bbm.csv         # BBM app review dataset
+│   └── dataset_pemilu.csv      # General Election comments dataset
 │
 ├── notebooks/
 │   ├── 1_Skenario_Fine_Tuning.ipynb
@@ -35,55 +35,55 @@ kp-penelitian/
 
 ---
 
-## 🔬 Metodologi Eksperimen
+## 🔬 Experimental Methodology
 
-Eksperimen dilakukan dengan membandingkan tiga model pada tiga skenario pelatihan:
+The experiment was conducted by comparing three models across three training scenarios:
 
-#### Model yang Digunakan:
-- **IndoBERTbase** (`indobenchmark/indobert-base-p1`)
+#### Models Used:
+- **IndoBERT-base** (`indobenchmark/indobert-base-p1`)
 - **IndoBERTweet** (`indobenchmark/indobertweet-base-p1`)
-- **RoBERTa** (`roberta-base` atau varian Indonesia lainnya)
+- **RoBERTa** (`roberta-base` or other Indonesian variants)
 
-#### Skenario Pengujian:
-1.  **Skenario 1: Fine-Tuning Standar & Optimasi LR:** Melatih seluruh model secara bersamaan dan mencari *learning rate* terbaik melalui *cross-validation*.
-2.  **Skenario 2: Gradual Unfreezing:** Melatih model secara bertahap, dimulai dari *classifier head* lalu perlahan membuka lapisan-lapisan di bawahnya.
-3.  **Skenario 3: Differential Learning Rates:** Melatih seluruh model secara bersamaan namun dengan *learning rate* yang berbeda untuk setiap grup lapisan.
+#### Experimental Scenarios:
+1.  **Scenario 1: Standard Fine-Tuning & LR Optimization:** Training the entire model simultaneously while searching for the best learning rate via cross-validation.
+2.  **Scenario 2: Gradual Unfreezing:** Training the model layer by layer, starting with the classifier head and progressively unfreezing the layers beneath it.
+3.  **Scenario 3: Differential Learning Rates:** Training the entire model simultaneously but applying different learning rates to distinct layer groups.
 
-## 🚀 Cara Menjalankan Eksperimen
+## 🚀 How to Run the Experiment
 
-Untuk mereproduksi hasil dari penelitian ini, ikuti langkah-langkah berikut:
+To reproduce the results of this research, follow these steps:
 
-#### 1. Prasyarat
+#### 1. Prerequisites
 - Python 3.8+
-- `pip` dan `venv` (direkomendasikan)
-- GPU dengan VRAM yang cukup (minimal 8GB direkomendasikan) untuk melatih model.
+- `pip` and `venv` (recommended)
+- GPU with sufficient VRAM (at least 8GB recommended) for training the models.
 
-#### 2. Kloning Repositori
+#### 2. Clone the Repository
 ```bash
 git clone https://github.com/rifqimaruf/kp-penelitian.git
 cd kp-penelitian
 ```
 
-#### 3. Setup Environment Virtual (Direkomendasikan)
+#### 3. Set up a Virtual Environment (Recommended)
 ```bash
-# Membuat environment virtual
+# Create a virtual environment
 python -m venv venv
 
-# Mengaktifkan environment (Windows)
+# Activate the environment (Windows)
 .\venv\Scripts\activate
 
-# Mengaktifkan environment (macOS/Linux)
+# Activate the environment (macOS/Linux)
 source venv/bin/activate
 ```
 
-## 📊 Hasil
-Hasil detail dari setiap skenario, termasuk tabel perbandingan, F1-Score, dan kurva *loss* untuk setiap model dan dataset, dapat ditemukan dalam laporan akhir penelitian ini. Secara ringkas, kombinasi terbaik yang ditemukan adalah:
+## 📊 Results
+Detailed results from each scenario, including comparison tables, F1-Scores, and loss curves for each model and dataset, can be found in the final research report. In summary, the best combination found was:
 - **Model:** `IndoBERTweet`
-- **Strategi:** `Fine-Tuning Standar`
-- **Learning Rate Optimal:** `3e-05` (untuk kedua dataset)
+- **Strategy:** `Standard Fine-Tuning`
+- **Optimal Learning Rate:** `3e-05` (for both datasets)
 
-## Catatan Peneliti
-Menurut peneliti, terdapat tiga alasan mengapa skenario 2 dan 3 gagal melakukan optimasi performa baseline:
-1. Baseline sudah diuji dengan beberapa versi learning rate dan divalidasi dengan 3-Fold sehingga hasilya menjadi tolak ukur yang tinggi.
-2. Penentuan lyaer yang dibekukan pada skenario Gradual Unfreezing terlalu kaku, semestinya menyesuaikan lagi dengan arsitektur modelnya.
-3. Kombinasi LR pada Differential learning rate masih belum dioptimalkan.
+## Researcher's Notes
+According to the researcher, there are three reasons why Scenarios 2 and 3 failed to improve upon the baseline performance:
+1.  The baseline was already tested with several learning rates and validated using 3-Fold Cross-Validation, setting a very high benchmark.
+2.  The determination of which layers to freeze in the Gradual Unfreezing scenario was too rigid and should have been further adapted to each model's specific architecture.
+3.  The combination of learning rates in the Differential Learning Rates scenario was not yet optimized.
