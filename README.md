@@ -1,7 +1,7 @@
 # A Comparative Study of Fine-Tuning Scenarios for Transformer Models in Indonesian Sentiment Analysis
 
-This repository contains the code and notebooks for a research project aimed at evaluating various fine-tuning strategies on transformer models for the task of Indonesian-language sentiment analysis.
-
+This repository contains the code and notebooks for a research project (mainly for KP). Full report can be accessed [here](https://repository.its.ac.id/120632)
+ 
 ## Abstract
 
 This research conducts a comparative study to evaluate three fine-tuning scenarios—Standard Fine-Tuning, Gradual Unfreezing, and Differential Learning Rates—across three model architectures: IndoBERT-base, IndoBERTweet, and RoBERTa. The experiments were performed on two datasets from different domains: app reviews (BBM Dataset) and political comments (Pemilu Dataset), using F1-Score as the primary evaluation metric. The results show that **IndoBERTweet** consistently emerged as the top-performing model, while the **Standard Fine-Tuning** strategy with an optimized learning rate proved to be superior to the other two, more complex techniques.
